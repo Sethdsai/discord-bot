@@ -1,0 +1,35 @@
+name: Bot Runner
+
+on:
+  repository_dispatch:
+    types: [run-bot]
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - run: npm install
+
+      - name: Start Bot
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: timeout 320m node index.js || true
+
+      - name: Restart
+        if: always()
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/dispatches" \
+            -d '{"event_type":"run-bot"}'

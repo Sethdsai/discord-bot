@@ -1,0 +1,12 @@
+{
+  "name": "Discord Bot",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "forwardPorts": [3000],
+  "postCreateCommand": "npm install",
+  "postStartCommand": "npm install && DISCORD_TOKEN=${localEnv:DISCORD_TOKEN} npm start",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  }
+}
