@@ -1,12 +1,15 @@
 {
-  "name": "Discord Bot",
+  "name": "Discord Bot 24/7",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "features": {},
   "forwardPorts": [3000],
   "postCreateCommand": "npm install",
-  "postStartCommand": "npm install && DISCORD_TOKEN=${localEnv:DISCORD_TOKEN} npm start",
+  "postStartCommand": "npm install && nohup npm start > /tmp/bot.log 2>&1 &",
+  "waitFor": "postCreateCommand",
   "customizations": {
     "vscode": {
       "extensions": ["dbaeumer.vscode-eslint"]
     }
-  }
+  },
+  "remoteUser": "root"
 }
